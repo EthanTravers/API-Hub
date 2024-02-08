@@ -1,0 +1,15 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "FUNCTIONS_WORKER_RUNTIME": "python",
+    "AzureWebJobsFeatureFlags": "EnableWorkerIndexing",
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "AzureCosmosDBConnectionString": "",
+
+    "DatabaseName": "",
+    "Players_Container": "",
+
+    "DeploymentURL" : "https://apihub-et2g21.azurewebsites.net",
+    "FunctionAppKey": "9xUsI5p_jifbfrQD9-eV8dRmNoR0i3jYcnIu-poWtposAzFuclLXkw=="
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "name": "api-hub",
+  "version": "1.0.0",
+  "description": "Front End for API Hub application.",
+  "main": "server.js",
+  "engines": {
+    "node": "16.x"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "gdeploy": "gcloud app deploy --version test"
+  },
+  "author": "Ethan Travers",
+  "license": "ECS",
+  "dependencies": {
+    "ejs": "^3.1.6",
+    "express": "^4.18.2",
+    "request": "^2.88.2",
+    "socket.io": "^4.7.2"
+  }
+}

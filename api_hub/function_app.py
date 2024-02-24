@@ -10,9 +10,11 @@ app.register_blueprint(bp)
 try:
 
     from functions.player.player_login import function as player_login
+    from functions.player.player_register import function as player_register
 
     function_list = [
-        player_login
+        player_login,
+        player_register
     ]
 
     for function in function_list:

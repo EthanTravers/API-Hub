@@ -1,14 +1,14 @@
 {
-  "IsEncrypted": true,
+  "IsEncrypted": false,
   "Values": {
-    "FUNCTIONS_WORKER_RUNTIME": "CfDJ8Jp9CPRa7TNElMLcsQHXS4wt1YFxUH2aTYgBCD+tpV0KQxHNA6mhEDJDPjA2QiuMdOT7js/ZZ8c9FPfv1BeHJMNjY8H3Na0/TCv9YVoe1urHRplwuCA2qnpyYZOMm7uaKw==",
-    "AzureWebJobsFeatureFlags": "CfDJ8Jp9CPRa7TNElMLcsQHXS4yD4Denm5xPB+9Cu6w+X8a0TYindtjgdJ8ruDhItDnnQMg49kMYslkfGUmpq9i4r0Kw4TFIv9JBJiVevqWwJb/ej6ASZuzs3pWM/9H/rAvW/IXtUWnMCfJVAXI34HBaBro=",
-    "AzureWebJobsStorage": "CfDJ8Jp9CPRa7TNElMLcsQHXS4z5M6lfbeVJpRXvrCwrvyJaSk/MtV7fBZ1EPmrd/ifyRE2mWTYEk0jhxYuGGtRv3zFGg23GBKrj6tjrf9fkKxygmdwMMy4LPRoHllbvs3Etw7B823gcTNpzsBN0j55HedA=",
-    "AzureCosmosDBConnectionString": "CfDJ8Jp9CPRa7TNElMLcsQHXS4wPzCplp7L1vsEO0G3URUrUF84n/g0tgQCZ9XQRA/dY6rzrwPxVzKgFqCpdMMLbHqoHnVw1iCAgasKEZTAjWUINn9y5ju1aJGpJ2Z8epaxgEr2fdoXYPV332zu4U1l+ud+N9QF27iHlUKMiZj6HjGlQCfBvf2gNedUWDGOOyJ8aXCDNqLAwUQAUZHapD28++cmn/NdsTiuYAVbp3w0k+n26SXtYTMiGIk00pDTMXbQXujl7nswzWwlJ5ka0FWMNcyLVK+VD2ASHfwkEXcExqVrQ9thkY/qJPtoLH0tLviwZfIil036KOs0mfTiAb9MopGU=",
-    "DatabaseName": "CfDJ8Jp9CPRa7TNElMLcsQHXS4yHees2HcY63e7kM3B7dHd+wruqn0uSpS2eiqf/hR0D8CJX3IueDW4adFvfD7JGIMT3INTxoad0j0LxKAi7YSItFmXbdKiJtWUSSMtG2oi0iQ==",
-    "Users_Container": "CfDJ8Jp9CPRa7TNElMLcsQHXS4yMq1+jWaws8wOiEQjrGMjjEU6RiDuA2wy3rlETD0rkl9SXQx+WWIBdShE+Tz9Alv0HRB4g5F9zIosYhL5y2Zc4+AdG6uwCK29OxArjcpAJgw==",
-    "DeploymentURL": "CfDJ8Jp9CPRa7TNElMLcsQHXS4zoaCOOpwrSMP21P3ZYw+ugqIMGsDiylCA0xiTBXfWov3x06cp3SlzsICaDZlO4P9zYWPon6hXpDfr1ZPPUGH1fxSFRvLdCI6TUJbCQo12S4yQNisqnMnTyq9HyMzQjSbbtBJgT8rNFxDXBigFE7OcL",
-    "FunctionAppKey": "CfDJ8Jp9CPRa7TNElMLcsQHXS4xKVaOcYv88C0AMHBVt0OnlvcV0PPKIl8KvSe9mIAeLQNjzoqrH7P0R3N2KR0MYW/ipIeJvGVHs4EstO0dm2KfVzFF3DntN6Dn6SBHHvCNR+2zd4VuIZo2bAV/ypZ634cK8eF21wN/Z4ajwq4vgc/NOF8X+lq/SVZeS1EB4Yqe1HA=="
+    "FUNCTIONS_WORKER_RUNTIME": "python",
+    "AzureWebJobsFeatureFlags": "EnableWorkerIndexing",
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "AzureCosmosDBConnectionString": "AccountEndpoint=https://api-hub-db.documents.azure.com:443/;AccountKey=2TwEHrqsq07AvmwMQFij20UrKu0NOCug8D8nr79RpEOJKN8xrejMIWFY7ac6dgZNyCxbXT5FMdJZACDb20nt0Q==;",
+    "DatabaseName": "api-hub-db",
+    "Users_Container": "Users",
+    "DeploymentURL": "https://apihub-et2g21.azurewebsites.net",
+    "FunctionAppKey": "9xUsI5p_jifbfrQD9-eV8dRmNoR0i3jYcnIu-poWtposAzFuclLXkw=="
   },
   "ConnectionStrings": {}
 }

@@ -5,8 +5,10 @@
     "AzureWebJobsFeatureFlags": "EnableWorkerIndexing",
     "AzureWebJobsStorage": "UseDevelopmentStorage=true",
     "AzureCosmosDBConnectionString": "AccountEndpoint=https://api-hub-db.documents.azure.com:443/;AccountKey=2TwEHrqsq07AvmwMQFij20UrKu0NOCug8D8nr79RpEOJKN8xrejMIWFY7ac6dgZNyCxbXT5FMdJZACDb20nt0Q==;",
+
     "DatabaseName": "api-hub-db",
     "Users_Container": "Users",
+
     "DeploymentURL": "https://apihub-et2g21.azurewebsites.net",
     "FunctionAppKey": "9xUsI5p_jifbfrQD9-eV8dRmNoR0i3jYcnIu-poWtposAzFuclLXkw=="
   },

@@ -18,6 +18,10 @@ class UsernameLengthError(ValueError):
     def getMessage():
         return "Username length invalid"
 
+class IncorrectPasswordError(ValueError):
+    @staticmethod
+    def getMessage():
+        return "Incorrect Password"
 
 class User:
     def __init__(self, userData):
@@ -51,7 +55,7 @@ class User:
                 flag_chars = False
         if username[0].isalnum():
             flag_first = True
-        if 0 < len(username) < 16:
+        if 0 <= len(username) < 16:
             flag_length = True
         if not flag_letter:
             raise UsernameLetterError()

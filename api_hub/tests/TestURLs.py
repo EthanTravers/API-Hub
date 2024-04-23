@@ -26,11 +26,13 @@ class TestURLs:
     PUBLIC_URLs = {
         "USER_REGISTER": "https://apihub-et2g21.azurewebsites.net/api/userregister?code={}".format(key),
         "USER_DELETE": "https://apihub-et2g21.azurewebsites.net/api/userDelete?code={}".format(key),
+        "USER_LOGIN": "https://apihub-et2g21.azurewebsites.net/api/userLogin?code={}".format(key),
     }
     # Local URLs
     LOCAL_URLs = {
         "USER_REGISTER": "http://localhost:7071/api/userRegister?code={}".format(key),
         "USER_DELETE": "http://localhost:7071/api/userDelete?code={}".format(key),
+        "USER_LOGIN": "http://localhost:7071/api/userLogin?code={}".format(key),
     }
 
     DEFAULT_TEST_USER = {

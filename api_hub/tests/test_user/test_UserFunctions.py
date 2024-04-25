@@ -8,20 +8,21 @@ from api_hub.tests.TestURLs import TestURLs
 from api_hub.helper.api_responses import SuccessfulUserLogin, SuccessfulUserRegister
 from api_hub.helper.database import DatabaseDoesNotContainUsernameError, DatabaseContainsUsernameError
 
+TEST_URLS = TestURLs.PUBLIC_URLs
+
 
 class TestUserLogin(unittest.TestCase, TestURLs):
-    TEST_URLS = TestURLs.PUBLIC_URLs
 
     def setUp(self):
-        requests.post(self.TEST_URLS['USER_REGISTER'], data=json.dumps(TestURLs.DEFAULT_TEST_USER))
+        requests.post(TEST_URLS['USER_REGISTER'], data=json.dumps(TestURLs.DEFAULT_TEST_USER))
 
     def tearDown(self):
-        requests.delete(self.TEST_URLS['USER_DELETE'],
+        requests.delete(TEST_URLS['USER_DELETE'],
                         data=json.dumps({"username": TestURLs.DEFAULT_TEST_USER['username']}))
 
     def testValidUserLogin(self):
         user = TestURLs.DEFAULT_TEST_USER
-        response = requests.post(self.TEST_URLS['USER_LOGIN'],
+        response = requests.post(TEST_URLS['USER_LOGIN'],
                                  data=json.dumps(user))
 
         responseOutput = {'result': True, "msg": SuccessfulUserLogin()}
@@ -30,7 +31,7 @@ class TestUserLogin(unittest.TestCase, TestURLs):
     def testInvalidUserLogin_IncorrectPassword(self):
         user = TestURLs.DEFAULT_TEST_USER.copy()
         user['password'] = 'ethan'
-        response = requests.post(self.TEST_URLS['USER_LOGIN'],
+        response = requests.post(TEST_URLS['USER_LOGIN'],
                                  data=json.dumps(user))
 
         responseOutput = {'result': False, "msg": IncorrectPasswordError.getMessage()}
@@ -39,7 +40,7 @@ class TestUserLogin(unittest.TestCase, TestURLs):
     def testInvalidUserLogin_UserDoesNotExist(self):
         user = TestURLs.DEFAULT_TEST_USER.copy()
         user['username'] = 'ethan'
-        response = requests.post(self.TEST_URLS['USER_LOGIN'],
+        response = requests.post(TEST_URLS['USER_LOGIN'],
                                  data=json.dumps(user))
 
         responseOutput = {'result': False, "msg": DatabaseDoesNotContainUsernameError.getMessage()}
@@ -47,15 +48,14 @@ class TestUserLogin(unittest.TestCase, TestURLs):
 
 
 class TestUserRegister(unittest.TestCase, TestURLs):
-    TEST_URLS = TestURLs.PUBLIC_URLs
 
     def tearDown(self):
-        requests.delete(self.TEST_URLS['USER_DELETE'],
+        requests.delete(TEST_URLS['USER_DELETE'],
                         data=json.dumps({"username": TestURLs.DEFAULT_TEST_USER['username']}))
 
     def testValidUserRegister(self):
         user = TestURLs.DEFAULT_TEST_USER
-        response = requests.post(self.TEST_URLS['USER_REGISTER'],
+        response = requests.post(TEST_URLS['USER_REGISTER'],
                                  data=json.dumps(user))
 
         responseOutput = {'result': True, "msg": SuccessfulUserRegister()}
@@ -67,8 +67,8 @@ class TestUserRegister(unittest.TestCase, TestURLs):
 
     def testUserAlreadyExists(self):
         user = TestURLs.DEFAULT_TEST_USER
-        requests.post(self.TEST_URLS['USER_REGISTER'], data=json.dumps(user))
-        response = requests.post(self.TEST_URLS['USER_REGISTER'], data=json.dumps(user))
+        requests.post(TEST_URLS['USER_REGISTER'], data=json.dumps(user))
+        response = requests.post(TEST_URLS['USER_REGISTER'], data=json.dumps(user))
 
         responseOutput = {'result': False, "msg": DatabaseContainsUsernameError.getMessage()}
         self.assertEqual(responseOutput, response.json())
@@ -77,7 +77,7 @@ class TestUserRegister(unittest.TestCase, TestURLs):
         user = TestURLs.DEFAULT_TEST_USER.copy()
         user['username'] = 'Ethan!'
         print(TestURLs.DEFAULT_TEST_USER['username'])
-        response = requests.post(self.TEST_URLS['USER_REGISTER'],
+        response = requests.post(TEST_URLS['USER_REGISTER'],
                                  data=json.dumps(user))
 
         responseOutput = {'result': False, "msg": UsernameCharError.getMessage()}
@@ -91,7 +91,7 @@ class TestUserRegister(unittest.TestCase, TestURLs):
         user = TestURLs.DEFAULT_TEST_USER.copy()
         user['username'] = 'abcdefghijklmnop'
 
-        response = requests.post(self.TEST_URLS['USER_REGISTER'],
+        response = requests.post(TEST_URLS['USER_REGISTER'],
                                  data=json.dumps(user))
 
         responseOutput = {'result': False, "msg": UsernameLengthError.getMessage()}
@@ -105,7 +105,7 @@ class TestUserRegister(unittest.TestCase, TestURLs):
         user = TestURLs.DEFAULT_TEST_USER.copy()
         user['username'] = '_Ethan'
 
-        response = requests.post(self.TEST_URLS['USER_REGISTER'],
+        response = requests.post(TEST_URLS['USER_REGISTER'],
                                  data=json.dumps(user))
 
         responseOutput = {'result': False, "msg": UsernameFirstError.getMessage()}
@@ -119,7 +119,7 @@ class TestUserRegister(unittest.TestCase, TestURLs):
         user = TestURLs.DEFAULT_TEST_USER.copy()
         user['username'] = '123'
 
-        response = requests.post(self.TEST_URLS['USER_REGISTER'],
+        response = requests.post(TEST_URLS['USER_REGISTER'],
                                  data=json.dumps(user))
 
         responseOutput = {'result': False, "msg": UsernameLetterError.getMessage()}

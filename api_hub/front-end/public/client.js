@@ -2,15 +2,13 @@ var socket = null;
 
 //Prepare game
 var app = new Vue({
-    el: '#game',
+    el: '#app',
     data: {
         connected: false,
-        messages: [],
-        chatmessage: '',
         user:{
             username:null,
             password:null,
-            state:null,
+            isLoggedIn:false,
         },
         page:"home"
     },
@@ -48,5 +46,19 @@ function connect() {
         app.connected = false;
     });
 
+    socket.on('confirm_register', function (info){
+        alert(`Registered User: ${info.username}`);
+    });
+
+    socket.on('confirm_login', function (info){
+        alert(`User ${info.username} logged in`);
+        app.user.isLoggedIn=true;
+        app.user = {info}
+        alert(app.user)
+    });
+
+    socket.on('error', function (info){
+        alert(`error:${info}`);
+    });
 
 }

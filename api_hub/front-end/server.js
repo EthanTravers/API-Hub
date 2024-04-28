@@ -4,6 +4,9 @@
 const express = require('express');
 const app = express();
 
+// Setup request
+const request = require("request");
+
 //Setup socket.io
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
@@ -17,9 +20,11 @@ app.get('/', (req, res) => {
   res.render('client');
 });
 
+let socketInfo ={};
+let azureKey = "?code=9xUsI5p_jifbfrQD9-eV8dRmNoR0i3jYcnIu-poWtposAzFuclLXkw==";
 
 // URL of the backend API
-const BACKEND_ENDPOINT = 'https://apihub-et2g21.azurewebsites.net' || 'http://localhost:7071';
+const BACKEND_ENDPOINT = 'https://apihub-et2g21.azurewebsites.net'; // 'http://localhost:7071';
 
 //Start the server
 function startServer() {
@@ -29,19 +34,92 @@ function startServer() {
     });
 }
 
-function handleRegister(registerJSON){
+function handleRegister(socket, registerJSON){
+
     //Backend Register Call
-    //Alert user if it can't create the account
-    //Send successful register and then proceed to log in with those credentials with handleLogin
+    azurePOST("/api/userRegister", registerJSON).then(
+        function(response) {
+            console.log("Success:");
+            console.log(response);
+            if (response["result"]) {
+                socket.emit("confirm_register", registerJSON)
+                handleLogin(socket, registerJSON)
+            }
+            else {
+                socket.emit("error", response["msg"])
+            }
+        },
+        function (error) {
+            console.error("Error:");
+            console.error(error);
+        }
+    );
 }
 
+function handleLogin(socket, loginJSON){
+
+    //Backend Register Call
+    azurePOST("/api/userLogin", loginJSON).then(
+        function(response) {
+            console.log("Success:");
+            console.log(response);
+            if (response["result"]) {
+                socket.emit("confirm_login", loginJSON)
+            }
+            else {
+                socket.emit("error", response["msg"])
+            }
+        },
+        function (error) {
+            console.error("Error:");
+            console.error(error);
+        }
+    );
+}
+
+function azurePOST(path,body){
+    return new Promise((success, failure) => {
+		request.post(BACKEND_ENDPOINT + path + azureKey, {
+			json: true,
+			body: body
+		}, function(err, response, body) {
+            if (err) {
+                failure(err);
+            } else {
+			    success(body);
+            }
+		});
+	});
+}
+
+function azureDELETE(path, body) {
+    console.log(BACKEND_ENDPOINT + path);
+    return new Promise((success, failure) => {
+        request.delete(BACKEND_ENDPOINT + path, {
+            json: true,
+            body: body
+        }, function(err, response, body) {
+            if (err) {
+                failure(err);
+            } else {
+                success(body);
+            }
+        });
+    });
+}
 
 //Handle new connection
 io.on('connection', socket => {
   console.log('New connection');
 
   socket.on('register', (registerJSON) => {
-      handleRegister(registerJSON);
+      console.log("User trying to register")
+      handleRegister(socket,registerJSON);
+  });
+
+    socket.on('login', (loginJSON) => {
+      console.log("User trying to login")
+      handleLogin(socket,loginJSON);
   })
 
   //Handle disconnection

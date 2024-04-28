@@ -16,13 +16,10 @@ app.use('/static', express.static('public'));
 app.get('/', (req, res) => {
   res.render('client');
 });
-//Handle display interface on /display
-app.get('/display', (req, res) => {
-  res.render('display');
-});
+
 
 // URL of the backend API
-const BACKEND_ENDPOINT = process.env.BACKEND || 'http://localhost:8181';
+const BACKEND_ENDPOINT = 'https://apihub-et2g21.azurewebsites.net' || 'http://localhost:7071';
 
 //Start the server
 function startServer() {
@@ -32,20 +29,20 @@ function startServer() {
     });
 }
 
-//Chat message
-function handleChat(message) {
-    console.log('Handling chat: ' + message);
-    io.emit('chat',message);
+function handleRegister(registerJSON){
+    //Backend Register Call
+    //Alert user if it can't create the account
+    //Send successful register and then proceed to log in with those credentials with handleLogin
 }
+
 
 //Handle new connection
 io.on('connection', socket => {
   console.log('New connection');
 
-  //Handle on chat message received
-  socket.on('chat', message => {
-    handleChat(message);
-  });
+  socket.on('register', (registerJSON) => {
+      handleRegister(registerJSON);
+  })
 
   //Handle disconnection
   socket.on('disconnect', () => {

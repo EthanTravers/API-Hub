@@ -7,20 +7,22 @@ var app = new Vue({
         connected: false,
         messages: [],
         chatmessage: '',
+        user:{
+            username:null,
+            password:null,
+            state:null,
+        },
+        page:"home"
     },
     mounted: function() {
         connect();
     },
     methods: {
-        handleChat(message) {
-            if(this.messages.length + 1 > 10) {
-                this.messages.pop();
-            }
-            this.messages.unshift(message);
+        register(username, password) {
+            socket.emit('register', {"username": username, "password": password});
         },
-        chat() {
-            socket.emit('chat',this.chatmessage);
-            this.chatmessage = '';
+        login(username, password) {
+            socket.emit('login', {"username": username, "password": password});
         },
     }
 });
@@ -44,11 +46,6 @@ function connect() {
     socket.on('disconnect', function() {
         alert('Disconnected');
         app.connected = false;
-    });
-
-    //Handle incoming chat message
-    socket.on('chat', function(message) {
-        app.handleChat(message);
     });
 
 

@@ -86,6 +86,9 @@ function handleExploreAPI(socket,urlJSON){
             console.log("Success:");
             console.log(response);
             if (response["result"]) {
+                const parts = urlJSON.url.split('/');
+                const apiName = parts[parts.length - 1];
+                socket.emit("confirm_explore", {'apiname':apiName, 'functions':response.msg})
             }
             else {
                 socket.emit("error", response["msg"])

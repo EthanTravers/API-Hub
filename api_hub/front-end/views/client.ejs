@@ -13,8 +13,11 @@
         <div v-if="user.isLoggedIn === false">
             <h1>You must be logged in to do that!</h1>
         </div>
-        <div v-else-if="user.isLoggedIn === true">
+        <div v-else-if="user.isLoggedIn === true && user.explored === false">
             <%- include('submit_API_files'); -%>
+        </div>
+        <div v-else-if="user.isLoggedIn === true && user.explored === true">
+            <%- include('show_explored_API'); -%>
         </div>
     </div>
 </div>

@@ -2,7 +2,7 @@ import azure.functions as func
 from azure.cosmos import CosmosClient
 from azure.cosmos.exceptions import CosmosHttpResponseError
 
-import json, logging, os, shutil
+import json, logging, os, shutil, subprocess
 
 
 
@@ -35,33 +35,38 @@ def exploreAPI(req: func.HttpRequest) -> func.HttpResponse:
         # Get name of API folder (last part of url)
         apiName = url.split('/')[-1]
 
-        if not os.path.exists('uploads/{}'.format(apiName)):
-
-            # Change cwd to uploads
+        if not os.path.exists(f'uploads/{apiName}'):
+            # Change cwd to 'uploads'
             os.chdir('uploads')
 
-            # Clone the directory if uncloned os.system to call git clone
-            os.system("git clone {}".format(url))
+            # Verify if the URL can be cloned by trying a dry run of git clone
+            try:
+                # Using subprocess.run to run the git clone command and capture the return code
+                result = subprocess.run(["git", "clone", url], capture_output=True, text=True)
+
+                if result.returncode == 0:
+                    logging.info(f"Successfully cloned the repository: {url}")
+                else:
+                    logging.info(f"Failed to clone the repository: {url}")
+                    logging.info(f"Error message: {result.stderr}")
+                    return func.HttpResponse(body=json.dumps({'result': False, "msg": "Failed to Clone that repository"}),mimetype="application/json")
+
+            except Exception as e:
+                return func.HttpResponse(body=json.dumps({'result': False, "msg": "Failed to Clone that repository"}),mimetype="application/json")
 
             # Change cwd back to parent folder
             os.chdir('..')
-
+        else:
+            print(f"The directory 'uploads/{apiName}' already exists.")
         # Parse each file and scan for functions
-        routes_info = scan_python_files(apiName)
-
-        for route in routes_info:
-            logging.info(f"Function Info: {route}")
-            #logging.info(f"Function: {route['function_name']}")
-            #logging.info(f"Route Args: {route['route_args']}")
-            #logging.info(f"Returns: {route['returns']}\n")
-        # Return JSON of functions
+        functions = scan_python_files(apiName)
 
         # Delete uploaded API files
         logging.info("Deleting {} files...".format(apiName))
         if os.path.isdir('uploads/{}'.format(apiName)):
             shutil.rmtree('uploads/{}'.format(apiName))
 
-        return func.HttpResponse(body=json.dumps({'result': True, "msg": ""}), mimetype="application/json")
+        return func.HttpResponse(body=json.dumps({'result': True, "msg": json.dumps(functions)}), mimetype="application/json")
     except CosmosHttpResponseError:
         message = CosmosHttpResponseErrorMessage()
         logging.error(message)

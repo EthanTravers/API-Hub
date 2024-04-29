@@ -9,6 +9,9 @@ var app = new Vue({
             username:null,
             password:null,
             isLoggedIn:false,
+            explored:false,
+            currentapiname:null,
+            currentapifunctions:[],
         },
         page:"home"
     },
@@ -26,9 +29,15 @@ var app = new Vue({
             this.page = page;
         },
         submitURL(url){
-            alert("Received request for: " + url)
+            alert("Exploring API, this may take a few seconds!")
             socket.emit('exploreAPI', {"url": url});
         },
+        resetAPI(){
+            this.user.explored=false;
+            this.user.currentapiname = null;
+            this.user.currentapifunctions = [];
+        },
+
 
 
     }
@@ -64,6 +73,14 @@ function connect() {
         app.user.isLoggedIn=true;
         app.user.username = info.username
         app.user.password = info.password
+    });
+
+    socket.on('confirm_explore', function(info){
+        alert(`Successfully explored API: ${info.apiname}`);
+        app.user.currentapiname = info.apiname;
+        app.user.currentapifunctions = JSON.parse(info.functions);
+        app.user.explored = true;
+
     });
 
     socket.on('error', function (info){

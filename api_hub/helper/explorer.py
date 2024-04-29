@@ -5,7 +5,6 @@ import logging
 
 
 def get_route_info(file_content):
-    """Parse a Python file content and return information about functions decorated with @function.route."""
     tree = ast.parse(file_content)
     routes = []
 
@@ -21,7 +20,7 @@ def get_route_info(file_content):
             if route:
                 # Extract route arguments
                 route_info = {'function_name': node.name,
-                              'route': '',
+                              'route': node.name,
                               'auth_level': None,
                               'methods': None}
                 for arg in route.args:
@@ -40,6 +39,8 @@ def get_route_info(file_content):
                     elif kw.arg == 'methods':
                         if isinstance(kw.value, ast.List):
                             route_info['methods'] = [elem.value for elem in kw.value.elts if isinstance(elem, ast.Constant)]
+                    elif kw.arg == 'route':
+                        route_info['route'] = kw.value.value
 
                 # Extract all return values
                 route_info['returns'] = extract_return_values(node.body)
@@ -49,7 +50,6 @@ def get_route_info(file_content):
     return routes
 
 def extract_return_values(body):
-    """Extract return statements from a list of AST nodes."""
     return_values = []
 
     for node in body:
@@ -79,14 +79,12 @@ def extract_return_values(body):
     return return_values
 
 def scan_python_files(apiName):
-    """Scan all Python files matching a given pattern for @function.route decorated functions."""
     pattern = 'uploads/' + apiName + '/**/*.py'
     py_files = glob.glob(pattern, recursive=True)
 
     results = []
 
     for file_path in py_files:
-        logging.info(file_path)
         with open(file_path, 'r') as f:
             file_content = f.read()
         route_info = get_route_info(file_content)

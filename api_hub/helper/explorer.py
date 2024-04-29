@@ -21,7 +21,7 @@ def get_route_info(file_content):
             if route:
                 # Extract route arguments
                 route_info = {'function_name': node.name,
-                              'route_args': [],
+                              'route_args': {},
                               'auth_level': None,
                               'methods': None}
                 for arg in route.args:
@@ -37,23 +37,42 @@ def get_route_info(file_content):
                         if isinstance(kw.value, ast.List):
                             route_info['methods'] = [elem.value for elem in kw.value.elts if isinstance(elem, ast.Constant)]
 
-                # Get all return values in the function
-                return_values = []
-                for stmt in node.body:
-                    if isinstance(stmt, ast.Return):
-                        if isinstance(stmt.value, ast.Constant):
-                            return_values.append(stmt.value.value)
-                        elif isinstance(stmt.value, ast.Name):
-                            return_values.append(stmt.value.id)
-                        elif isinstance(stmt.value, ast.Call):
-                            # For more complex return statements
-                            return_values.append(ast.unparse(stmt.value))
+                # Extract all return values
+                route_info['returns'] = extract_return_values(node.body)
 
-                route_info['returns'] = return_values
                 routes.append(route_info)
 
     return routes
 
+def extract_return_values(body):
+    """Extract return statements from a list of AST nodes."""
+    return_values = []
+
+    for node in body:
+        if isinstance(node, ast.Return):
+            if isinstance(node.value, ast.Constant):
+                return_values.append(node.value.value)
+            elif isinstance(node.value, ast.Name):
+                return_values.append(node.value.id)
+            elif isinstance(node.value, ast.Call):
+                # For more complex return statements
+                return_values.append(ast.unparse(node.value))
+        elif isinstance(node, (ast.If, ast.For, ast.While, ast.Try)):
+            # Recursively check nested bodies
+            if isinstance(node, ast.If):
+                return_values.extend(extract_return_values(node.body))
+                return_values.extend(extract_return_values(node.orelse))
+            elif isinstance(node, ast.Try):
+                return_values.extend(extract_return_values(node.body))
+                for handler in node.handlers:
+                    return_values.extend(extract_return_values(handler.body))
+                return_values.extend(extract_return_values(node.orelse))
+                return_values.extend(extract_return_values(node.finalbody))
+            elif isinstance(node, (ast.For, ast.While)):
+                return_values.extend(extract_return_values(node.body))
+                return_values.extend(extract_return_values(node.orelse))
+
+    return return_values
 
 def scan_python_files(apiName):
     """Scan all Python files matching a given pattern for @function.route decorated functions."""

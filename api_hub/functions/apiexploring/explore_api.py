@@ -15,7 +15,7 @@ except ModuleNotFoundError:
 
 function = func.Blueprint()
 
-@function.route('exploreAPI',auth_level=func.AuthLevel.FUNCTION, methods=['POST'])
+@function.route('exploreAPI','','',['POST'],auth_level=func.AuthLevel.FUNCTION)
 def exploreAPI(req: func.HttpRequest) -> func.HttpResponse:
     try:
         cosmos = CosmosClient.from_connection_string(os.environ['AzureCosmosDBConnectionString'])

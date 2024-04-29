@@ -20,10 +20,22 @@ def get_route_info(file_content):
 
             if route:
                 # Extract route arguments
-                route_info = {'function_name': node.name, 'route_args': []}
+                route_info = {'function_name': node.name,
+                              'route_args': [],
+                              'auth_level': None,
+                              'methods': None}
                 for arg in route.args:
                     if isinstance(arg, ast.Constant):
                         route_info['route_args'].append(arg.value)
+
+                # Extract keyword arguments
+                for kw in route.keywords:
+                    if kw.arg == 'auth_level':
+                        if isinstance(kw.value, ast.Attribute):
+                            route_info['auth_level'] = kw.value.attr
+                    elif kw.arg == 'methods':
+                        if isinstance(kw.value, ast.List):
+                            route_info['methods'] = [elem.value for elem in kw.value.elts if isinstance(elem, ast.Constant)]
 
                 # Get all return values in the function
                 return_values = []

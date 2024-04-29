@@ -2,7 +2,7 @@ import azure.functions as func
 from azure.cosmos import CosmosClient
 from azure.cosmos.exceptions import CosmosHttpResponseError
 
-import json, logging, os, glob
+import json, logging, os, shutil
 
 
 
@@ -50,12 +50,17 @@ def exploreAPI(req: func.HttpRequest) -> func.HttpResponse:
         routes_info = scan_python_files(apiName)
 
         for route in routes_info:
-            logging.info(f"Function: {route['function_name']}")
-            logging.info(f"Route Args: {route['route_args']}")
-            logging.info(f"Returns: {route['returns']}\n")
+            logging.info(f"Function Info: {route}")
+            #logging.info(f"Function: {route['function_name']}")
+            #logging.info(f"Route Args: {route['route_args']}")
+            #logging.info(f"Returns: {route['returns']}\n")
         # Return JSON of functions
 
         # Delete uploaded API files
+        logging.info("Deleting {} files...".format(apiName))
+        if os.path.isdir('uploads/{}'.format(apiName)):
+            shutil.rmtree('uploads/{}'.format(apiName))
+
         return func.HttpResponse(body=json.dumps({'result': True, "msg": ""}), mimetype="application/json")
     except CosmosHttpResponseError:
         message = CosmosHttpResponseErrorMessage()

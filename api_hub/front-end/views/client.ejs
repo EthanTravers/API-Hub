@@ -1,6 +1,21 @@
 <%- include('header.ejs'); -%>
 <div id="app">
-    <%- include('navbar.ejs'); -%>
-    <%- include('login.ejs'); -%>
+    <%- include('navbar'); -%>
+    <div v-if="page == 'home'">
+        <%- include('home'); -%>
+    </div>
+    <div v-else-if="page =='profile'">
+        <div v-if="user.isLoggedIn === false">
+            <%- include('login'); -%>
+        </div>
+    </div>
+    <div v-else-if="page =='exploreAPI'">
+        <div v-if="user.isLoggedIn === false">
+            <h1>You must be logged in to do that!</h1>
+        </div>
+        <div v-else-if="user.isLoggedIn === true">
+            <%- include('submit_API_files'); -%>
+        </div>
+    </div>
 </div>
 <%- include('footer.ejs'); -%>

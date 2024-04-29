@@ -24,7 +24,9 @@ let socketInfo ={};
 let azureKey = "?code=9xUsI5p_jifbfrQD9-eV8dRmNoR0i3jYcnIu-poWtposAzFuclLXkw==";
 
 // URL of the backend API
-const BACKEND_ENDPOINT = 'https://apihub-et2g21.azurewebsites.net'; // 'http://localhost:7071';
+const localURL='http://localhost:7071';
+const publicURL = 'https://apihub-et2g21.azurewebsites.net';
+const BACKEND_ENDPOINT = localURL;
 
 //Start the server
 function startServer() {
@@ -77,6 +79,25 @@ function handleLogin(socket, loginJSON){
     );
 }
 
+function handleExploreAPI(socket,urlJSON){
+    //Backend Register Call
+    azurePOST("/api/exploreAPI", urlJSON).then(
+        function(response) {
+            console.log("Success:");
+            console.log(response);
+            if (response["result"]) {
+            }
+            else {
+                socket.emit("error", response["msg"])
+            }
+        },
+        function (error) {
+            console.error("Error:");
+            console.error(error);
+        }
+    );
+}
+
 function azurePOST(path,body){
     return new Promise((success, failure) => {
 		request.post(BACKEND_ENDPOINT + path + azureKey, {
@@ -108,6 +129,7 @@ function azureDELETE(path, body) {
     });
 }
 
+
 //Handle new connection
 io.on('connection', socket => {
   console.log('New connection');
@@ -120,7 +142,12 @@ io.on('connection', socket => {
     socket.on('login', (loginJSON) => {
       console.log("User trying to login")
       handleLogin(socket,loginJSON);
-  })
+  });
+
+    socket.on('exploreAPI', (urlJSON) => {
+        console.log("User trying to exploreAPI")
+        handleExploreAPI(socket,urlJSON)
+    })
 
   //Handle disconnection
   socket.on('disconnect', () => {

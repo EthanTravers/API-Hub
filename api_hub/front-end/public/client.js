@@ -22,6 +22,15 @@ var app = new Vue({
         login(username, password) {
             socket.emit('login', {"username": username, "password": password});
         },
+        setPage(page){
+            this.page = page;
+        },
+        submitURL(url){
+            alert("Received request for: " + url)
+            socket.emit('exploreAPI', {"url": url});
+        },
+
+
     }
 });
 
@@ -53,8 +62,8 @@ function connect() {
     socket.on('confirm_login', function (info){
         alert(`User ${info.username} logged in`);
         app.user.isLoggedIn=true;
-        app.user = {info}
-        alert(app.user)
+        app.user.username = info.username
+        app.user.password = info.password
     });
 
     socket.on('error', function (info){

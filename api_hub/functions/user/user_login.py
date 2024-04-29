@@ -24,7 +24,7 @@ def userLogin(req: func.HttpRequest) -> func.HttpResponse:
 
         # Get the request
         reqJson = req.get_json()
-        logging.info('Python HTTP trigger function processed a request to register a user. JSON: {}'.format(reqJson))
+        logging.info('Python HTTP trigger function processed a request to login a user. JSON: {}'.format(reqJson))
 
         # Get user data from the input username
         query = "SELECT * FROM p where p.username='{}'".format(reqJson['username'])

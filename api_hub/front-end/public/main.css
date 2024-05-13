@@ -31,6 +31,14 @@
   margin-left: auto;
 }
 
+.home-card {
+  background-color: rgb(214, 214, 214);
+  padding: 40px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 900px;
+  margin: 80px auto;
+}
 
 .login-card {
   background-color: rgb(214, 214, 214);

@@ -8,6 +8,9 @@
         <div v-if="user.isLoggedIn === false">
             <%- include('login'); -%>
         </div>
+        <div v-if="user.isLoggedIn === true">
+            <h1>You are logged in!</h1>
+        </div>
     </div>
     <div v-else-if="page =='exploreAPI'">
         <div v-if="user.isLoggedIn === false">
